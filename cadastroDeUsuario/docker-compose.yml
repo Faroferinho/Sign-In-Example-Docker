@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=tb_usuario'
+      - 'MYSQL_PASSWORD=abc123'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=davi'
+    ports:
+      - '3306'
+
+  api:
+    image: openjdk:17
+    volumes:
+      - ./target:/app
+    working_dir: /app
+    command: ["java", "-jar", "app.jar"]
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
