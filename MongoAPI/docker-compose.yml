@@ -1,0 +1,11 @@
+services:
+  sb-app:
+    build: .
+    container_name: "docker-app"
+    ports:
+      - 8081:8081
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    ports:
+      - 27070:27017
