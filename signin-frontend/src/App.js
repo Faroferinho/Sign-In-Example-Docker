@@ -1,7 +1,7 @@
 import './App.css';
 import { useState,useEffect } from 'react';
 
-const MONGO_URL = "mongodb://localhost:27017/project/api/v1/user";
+const MONGO_URL = "http://localhost:8080/project/api/v1/user";
 const SQL_URL = "";
 
 export default function SignIn(){
@@ -21,7 +21,6 @@ export default function SignIn(){
 
   {/** TODO - Add a way to send the PUT request for both APIs */}
   const handleSend = async () => {
-    
     const newUser = form;
     const method = "POST";
 
