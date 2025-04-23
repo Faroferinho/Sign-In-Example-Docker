@@ -26,7 +26,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar ./app.jar
 
 # Exponha a porta que o aplicativo irá usar (se necessário)
-EXPOSE 8081
+EXPOSE 8080
 
 # Comando para executar o aplicativo quando o contêiner for iniciado
 CMD ["java", "-jar", "app.jar"]
