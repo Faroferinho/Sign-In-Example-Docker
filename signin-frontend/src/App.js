@@ -1,50 +1,64 @@
 import './App.css';
 import { useState,useEffect } from 'react';
 
-const API_URL = "http://localhost:8081/project/api/v1/user";
+const MONGO_URL = "mongodb://localhost:27017/project/api/v1/user";
+const SQL_URL = "";
 
 export default function SignIn(){
   const [users, setUser] = useState([]);
   const [form, setForm] = useState({id: "", name: "", phone: ""});
   const [edit, setEditon] = useState(null);
 
-  /*
+  
   useEffect(
     () => {
-      fetch(API_URL).then((res) => res.json()).then((data) => setUser(data))
+      fetch(MONGO_URL)
+      .then((res) => res.json())
+      .then((data) => setUser(data))
     }, []
   );
-  */
+  
 
   {/** TODO - Add a way to send the PUT request for both APIs */}
   const handleSend = async () => {
-    /*
+    
     const newUser = form;
     const method = "POST";
 
-    const response = await fetch(API_URL, {
-
+    const response = await fetch(MONGO_URL, {
+      method,
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify(newUser),
     });
-    */
+    
+    if(response.ok){
+      setUser(
+        
+      );
+      setEditon(null);
+      setForm({
+        id: "", 
+        name: "", 
+        phone: ""
+      });
+    }
   };
-
+/*
   const handleEdit = (user) => {
-    /*
     setForm(user);
     setEditon(user.id);
-    */
   };
 
   const handleDelete = async (id) => {
-    /*
-    const response = await fetch(`${API_URL}/${id}`, {method : "DELETE"});
+    
+    const response = await fetch(`${MONGO_URL}/${id}`, {method : "DELETE"});
 
     if(response.ok){
       setUser(users.filter(u => u.id != id));
     }
-      */
+    
   };
-
+*/
   return (
     <div className='bg-dark'>
       
