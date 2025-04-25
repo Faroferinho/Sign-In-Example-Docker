@@ -1,48 +1,55 @@
 import './App.css';
 import { useState,useEffect } from 'react';
 
-const MONGO_URL = "http://localhost:8081/project/api/v1/user";
+const MONGO_URL = "http://localhost:8080/project/api/v1/user";
 const SQL_URL = "";
 
-export default function SignIn(){
+export default function App(){
   const [users, setUser] = useState([]);
   const [form, setForm] = useState({id: "", name: "", phone: ""});
   const [edit, setEditon] = useState(null);
 
-  
-  useEffect(
-    () => {
-      fetch(MONGO_URL)
-      .then((res) => res.json())
+  console.log("teste");
+
+  useEffect(() => {
+    fetch(MONGO_URL)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        console.log(res.json);
+        return res.json();
+      })
       .then((data) => setUser(data))
-    }, []
-  );
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        // You might want to set some error state here
+      });
+  }, []);
+
+  console.log("alem: " + users);
   
 
-  {/** TODO - Add a way to send the PUT request for both APIs */}
+  
   const handleSend = async () => {
     const newUser = form;
     const method = "POST";
-
+    
     const response = await fetch(MONGO_URL, {
       method,
-      headers: {"Content-Type" : "application/json"},
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(newUser),
     });
-    
+
     if(response.ok){
       setUser(
-        
+        [...users, newUser]
       );
       setEditon(null);
-      setForm({
-        id: "", 
-        name: "", 
-        phone: ""
-      });
+      setForm({id: "", name: "", phone: ""});
     }
   };
-/*
+
   const handleEdit = (user) => {
     setForm(user);
     setEditon(user.id);
@@ -57,7 +64,7 @@ export default function SignIn(){
     }
     
   };
-*/
+
   return (
     <div className='bg-dark'>
       
