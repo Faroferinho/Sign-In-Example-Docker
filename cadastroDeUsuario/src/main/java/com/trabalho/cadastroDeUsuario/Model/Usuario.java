@@ -5,11 +5,10 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "db_usuario")
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID IdUsuario;
 
     @Column(name = "nome")
@@ -18,8 +17,10 @@ public class Usuario {
     @Column(name = "telefone")
     private String telefone;
 
+    public Usuario(){}
+
     public Usuario(UUID idUsuario, String nome, String telefone) {
-        IdUsuario = idUsuario;
+        this.IdUsuario = idUsuario;
         this.nome = nome;
         this.telefone = telefone;
     }
