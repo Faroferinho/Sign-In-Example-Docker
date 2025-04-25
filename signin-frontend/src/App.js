@@ -9,21 +9,23 @@ export default function App(){
   const [form, setForm] = useState({id: "", name: "", phone: ""});
   const [edit, setEditon] = useState(null);
 
-  console.log("teste");
-
   useEffect(() => {
-    fetch(MONGO_URL)
+    fetch(MONGO_URL, {
+        headers: {
+          'Content-Type': 'application/json',
+          // Outros headers necessários
+        }
+      })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
-        console.log(res.json);
         return res.json();
       })
       .then((data) => setUser(data))
       .catch((error) => {
-        console.error('Error fetching data:', error);
-        // You might want to set some error state here
+        console.error("Fetch error:", error);
+        // Trate o erro adequadamente (ex: mostrar mensagem para o usuário)
       });
   }, []);
 
@@ -34,7 +36,7 @@ export default function App(){
   const handleSend = async () => {
     const newUser = form;
     const method = "POST";
-    
+
     const response = await fetch(MONGO_URL, {
       method,
       headers: {"Content-Type": "application/json"},
@@ -45,7 +47,7 @@ export default function App(){
       setUser(
         [...users, newUser]
       );
-      setEditon(null);
+      //setEdition(null);
       setForm({id: "", name: "", phone: ""});
     }
   };
@@ -99,6 +101,39 @@ export default function App(){
         </div>
 
         {/** TODO - Inserir uma Tabela para confirmar ao usuário que os dados estão sendo inseridos */}
+      </div>
+
+      <div className='bg-dark'>
+        <h1 className='text-white text-center'>Lista de Alunos</h1>
+        <table class="table table-dark table-borderless">
+          <thead>
+            <tr className='text-white text-center'>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              users.map(
+                (user, id) => (
+                  <tr key={id}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.phone}</td>
+                    <td>
+                      <div class="btn-group btn-group-lg">
+                        <button class="btn btn-success" onClick={() => handleEdit(user)}>🖋️</button>
+                        <button class="btn btn-danger" onClick={() => handleDelete(user.id)}>❌</button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+             )
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   );
