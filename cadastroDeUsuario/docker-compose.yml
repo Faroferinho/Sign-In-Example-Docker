@@ -2,20 +2,26 @@ services:
   mysql:
     image: 'mysql:latest'
     environment:
-      - 'MYSQL_DATABASE=tb_usuario'
+      - 'MYSQL_DATABASE=db_usuario'
       - 'MYSQL_PASSWORD=abc123'
       - 'MYSQL_ROOT_PASSWORD=verysecret'
       - 'MYSQL_USER=davi'
     ports:
-      - '3306'
+      - "3306:3306"
+    networks:
+      - backend
+    restart: always
 
   api:
-    image: openjdk:17
-    volumes:
-      - ./target:/app
-    working_dir: /app
-    command: ["java", "-jar", "app.jar"]
+    build: .
     depends_on:
       - mysql
     ports:
       - "8080:8080"
+    networks:
+      - backend
+    restart: on-failure
+
+networks:
+  backend:
+    driver: bridge
