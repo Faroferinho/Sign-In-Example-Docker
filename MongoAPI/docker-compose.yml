@@ -28,7 +28,7 @@ services:
       - backend
     restart: on-failure
     environment:
-      - MONGO_URI=mongodb://mongo:27017/user
+      - MONGO_URI=mongodb://mongo-database:27017/user
 
 networks:
   backend:
