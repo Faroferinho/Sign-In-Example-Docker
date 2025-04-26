@@ -2,7 +2,7 @@ import './App.css';
 import { useState,useEffect } from 'react';
 
 const MONGO_URL = "http://localhost:8080/project/api/v1/user";
-const SQL_URL = "";
+const SQL_URL = "http://localhost:8081/usuarios";
 
 export default function App(){
   const [users, setUser] = useState([]);
@@ -27,10 +27,7 @@ export default function App(){
         console.error("Fetch error:", error);
         // Trate o erro adequadamente (ex: mostrar mensagem para o usuário)
       });
-  }, []);
-
-  console.log("alem: " + users);
-  
+  }, []);  
 
   
   const handleSend = async () => {
@@ -62,7 +59,7 @@ export default function App(){
     const response = await fetch(`${MONGO_URL}/${id}`, {method : "DELETE"});
 
     if(response.ok){
-      setUser(users.filter(u => u.id != id));
+      setUser(users.filter(u => u.id !== id));
     }
     
   };
@@ -80,22 +77,22 @@ export default function App(){
         </p>
 
         <div className='container mt-3'>
-          <div class="form-floating mb-3 mt-3">
-            <input class="form-control" placeholder='Id' value={ form.id } onChange={ (e) => setForm( { ...form, id: e.target.value } ) }/><br/>
+          <div className="form-floating mb-3 mt-3">
+            <input className="form-control" placeholder='Id' value={ form.id } onChange={ (e) => setForm( { ...form, id: e.target.value } ) }/><br/>
             <label>Id</label>
           </div>
 
-          <div class="form-floating mb-3 mt-3">
-            <input class="form-control" placeholder='Nome' value={ form.name } onChange={ (e) => setForm( { ...form, name: e.target.value } ) }/><br/>
+          <div className="form-floating mb-3 mt-3">
+            <input className="form-control" placeholder='Nome' value={ form.name } onChange={ (e) => setForm( { ...form, name: e.target.value } ) }/><br/>
             <label>Nome</label>
           </div>
 
-          <div class="form-floating mb-3 mt-3">
-            <input class="form-control" placeholder='Telefone' value={ form.phone } onChange={ (e) => setForm( { ...form, phone: e.target.value } ) }/><br/>
+          <div className="form-floating mb-3 mt-3">
+            <input className="form-control" placeholder='Telefone' value={ form.phone } onChange={ (e) => setForm( { ...form, phone: e.target.value } ) }/><br/>
             <label>Telefone</label>
           </div>
 
-          <button button type="button" class="btn btn-primary" onClick={handleSend}>
+          <button type="button" className="btn btn-primary" onClick={handleSend}>
             Adicionar
           </button>
         </div>
@@ -105,7 +102,7 @@ export default function App(){
 
       <div className='bg-dark'>
         <h1 className='text-white text-center'>Lista de Alunos</h1>
-        <table class="table table-dark table-borderless">
+        <table className="table table-dark table-borderless">
           <thead>
             <tr className='text-white text-center'>
               <th>ID</th>
@@ -123,9 +120,9 @@ export default function App(){
                     <td>{user.name}</td>
                     <td>{user.phone}</td>
                     <td>
-                      <div class="btn-group btn-group-lg">
-                        <button class="btn btn-success" onClick={() => handleEdit(user)}>🖋️</button>
-                        <button class="btn btn-danger" onClick={() => handleDelete(user.id)}>❌</button>
+                      <div className="btn-group btn-group-lg">
+                        <button className="btn btn-success" onClick={() => handleEdit(user)}>🖋️</button>
+                        <button className="btn btn-danger" onClick={() => handleDelete(user.id)}>❌</button>
                       </div>
                     </td>
                   </tr>
