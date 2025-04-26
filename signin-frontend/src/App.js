@@ -7,6 +7,8 @@ const SQL_URL = "http://localhost:8081/usuarios";
 export default function App(){
   const [users, setUser] = useState([]);
   const [form, setForm] = useState({id: "", name: "", phone: ""});
+  const [usuarios, setUsuarios] = useState([]);
+  const [formato, setFormato] = useState({id: "", nome: "", telefone: ""});
   const [edit, setEditon] = useState(null);
 
   useEffect(() => {
@@ -29,9 +31,30 @@ export default function App(){
       });
   }, []);  
 
+  useEffect(() => {
+    fetch(SQL_URL, {
+        headers: {
+          'Content-Type': 'application/json',
+          // Outros headers necessários
+        }
+      })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => setUsuarios(data))
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        // Trate o erro adequadamente (ex: mostrar mensagem para o usuário)
+      });
+  }, []);  
+
   
   const handleSend = async () => {
     const newUser = form;
+    const newUsuario = formato;
     const method = "POST";
 
     const response = await fetch(MONGO_URL, {
@@ -40,12 +63,23 @@ export default function App(){
       body: JSON.stringify(newUser),
     });
 
-    if(response.ok){
+    const resposta = await fetch(SQL_URL, {
+      method,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(newUsuario),
+    });
+
+    if(response.ok && resposta.ok){
       setUser(
         [...users, newUser]
       );
       //setEdition(null);
       setForm({id: "", name: "", phone: ""});
+      setUsuarios(
+        [...usuarios, newUsuario]
+      );
+      //setEdition(null);
+      setFormato({id: "", nome: "", telefone: ""});
     }
   };
 
@@ -78,17 +112,17 @@ export default function App(){
 
         <div className='container mt-3'>
           <div className="form-floating mb-3 mt-3">
-            <input className="form-control" placeholder='Id' value={ form.id } onChange={ (e) => setForm( { ...form, id: e.target.value } ) }/><br/>
+            <input className="form-control" placeholder='Id' value={ form.id } onChange={ (e) => {setForm( { ...form, id: e.target.value }); setFormato({...formato,id:e.target.value})} }/><br/>
             <label>Id</label>
           </div>
 
           <div className="form-floating mb-3 mt-3">
-            <input className="form-control" placeholder='Nome' value={ form.name } onChange={ (e) => setForm( { ...form, name: e.target.value } ) }/><br/>
+            <input className="form-control" placeholder='Nome' value={ form.name } onChange={ (e) => {setForm( { ...form, name: e.target.value } ); setFormato({...formato,nome:e.target.value})} }/><br/>
             <label>Nome</label>
           </div>
 
           <div className="form-floating mb-3 mt-3">
-            <input className="form-control" placeholder='Telefone' value={ form.phone } onChange={ (e) => setForm( { ...form, phone: e.target.value } ) }/><br/>
+            <input className="form-control" placeholder='Telefone' value={ form.phone } onChange={ (e) => {setForm( { ...form, phone: e.target.value } );setFormato({ ...formato,telefone:e.target.value})} }/><br/>
             <label>Telefone</label>
           </div>
 
